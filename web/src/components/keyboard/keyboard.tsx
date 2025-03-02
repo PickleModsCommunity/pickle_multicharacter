@@ -5,6 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { ArrowLeft, CircleX } from "lucide-react"
+import { useLoadingScreen } from "../loading/loading"
 
 type KeyProps = {
   className?: string
@@ -15,6 +16,7 @@ type KeyProps = {
 }
 
 const Key = ({ className, size = "normal", children, type = "normal", index }: KeyProps) => {
+    const { color } = useLoadingScreen()
   const [hovering, setHovering] = useState(false)
   const sizeClasses = {
     normal: "w-12 h-12",
@@ -37,7 +39,7 @@ const Key = ({ className, size = "normal", children, type = "normal", index }: K
                 "cursor-pointer rounded-md flex items-center justify-center font-medium shadow-sm transition-all duration-200 select-none hover:scale-90 transition-transform transform",
                 sizeClasses[size],
                 className,
-                keyDefinitions.length > 0 ? "bg-foreground/30" : "bg-foreground/10"
+                keyDefinitions.length > 0 ? "bg-foreground/40" : "bg-foreground/20"
             )}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => {setHovering(false)}}
@@ -45,7 +47,8 @@ const Key = ({ className, size = "normal", children, type = "normal", index }: K
                 {children}
         </div>
         {keyDefinitions.length > 0 && (
-            <div className="absolute z-10 bg-background text-foreground/90 p-2 rounded-md min-w-[100px] transform transition-all duration-200 pointer-events-none" style={{
+            <div className="absolute z-10 text-foreground/90 p-2 rounded-md min-w-[100px] transform transition-all duration-200 pointer-events-none" style={{
+                backgroundColor: "rgba(" + color.primary[0] + ", " + color.primary[1] + ", " + color.primary[2] + ", 0.95)",
                 marginTop: "0.25rem",
                 left: "50%",
                 transform: "translateX(-50%)",
@@ -61,9 +64,10 @@ const Key = ({ className, size = "normal", children, type = "normal", index }: K
 }
 
 export default function KeyboardLayout({onClose}: {onClose?: () => void}) {
+    const { color } = useLoadingScreen()
     let index = 0;
     return (
-        <div className="p-4 bg-background/90 rounded-xl max-w-[1200px] mx-auto">
+        <div className="p-4 rounded-xl max-w-[1200px] mx-auto" style={{ backgroundColor: "rgba(" + color.primary[0] + ", " + color.primary[1] + ", " + color.primary[2] + ", " + color.primary[3] + ")" }}>
             <div className="flex flex-col gap-2">
                 {/* Macro and Function row */}
                 <div className="flex gap-1.5 justify-between">
